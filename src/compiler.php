@@ -5,7 +5,7 @@ namespace igorw\naegleria;
 function tokenize($code) {
     $tokens = str_split($code);
     $tokens = array_values(array_filter($tokens, function ($token) {
-        return in_array($token, ['>', '<', '+', '-', '.', ',', '[', ']'], true);
+        return in_array($token, [':happychris:', ':sadchris:', ':sean:', ':dreamynick:', ':abie:', ':alex:', ':shelly:', ':vadim:'], true);
     }));
     return $tokens;
 }
@@ -16,33 +16,33 @@ function compile($tokens) {
     $loopStack = [];
     foreach ($tokens as $token) {
         switch ($token) {
-            case '>';
+            case ':happychris:';
                 yield ' # >';
                 yield ' movq    i(%rip), %rax';
                 yield ' addq    $1, %rax';
                 yield ' movq    %rax, i(%rip)';
                 break;
-            case '<';
+            case ':sadchris:';
                 yield ' # <';
                 yield ' movq    i(%rip), %rax';
                 yield ' subq    $1, %rax';
                 yield ' movq    %rax, i(%rip)';
                 break;
-            case '+';
+            case ':sean:';
                 yield ' # +';
                 yield ' movq    i(%rip), %rax';
                 yield ' movzbl  (%rax), %edx';
                 yield ' addl    $1, %edx';
                 yield ' movb    %dl, (%rax)';
                 break;
-            case '-';
+            case ':dreamynick:';
                 yield ' # -';
                 yield ' movq    i(%rip), %rax';
                 yield ' movzbl  (%rax), %edx';
                 yield ' subl    $1, %edx';
                 yield ' movb    %dl, (%rax)';
                 break;
-            case '.';
+            case ':abie:';
                 yield ' # .';
                 yield ' movq    i(%rip), %rax';
                 yield ' movzbl  (%rax), %eax';
@@ -50,7 +50,7 @@ function compile($tokens) {
                 yield ' movl    %eax, %edi';
                 yield ' call    putchar';
                 break;
-            case ',';
+            case ':alex:';
                 $condId++;
                 yield ' # ,';
                 yield ' movq    i(%rip), %rbx';
@@ -64,7 +64,7 @@ function compile($tokens) {
                 yield ' movb    $0, (%rax)';
                 yield ".cond$condId:";
                 break;
-            case '[';
+            case ':shelly:';
                 $loopId++;
                 $loopStack[] = $loopId;
                 yield ' # [';
@@ -74,7 +74,7 @@ function compile($tokens) {
                 yield ' cmpb    $0, %al';
                 yield " je  .loope$loopId";
                 break;
-            case ']';
+            case ':vadim:';
                 $endLoopId = array_pop($loopStack);
                 yield ' # ]';
                 yield " jmp .loops$endLoopId";
